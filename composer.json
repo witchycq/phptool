@@ -1,0 +1,27 @@
+{
+  "name": "witchy/phptool",
+  "description": "php 工具包",
+  "type": "library",
+  "keywords": [
+    "Tools",
+    "Library"
+  ],
+  "homepage": "https://github.com/lanlangdeai/WebTool",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "witchy",
+      "email": "witchycq@163.com",
+      "role": "Developer"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=7.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "WebTool\\": "src/"
+    }
+  }
+}
