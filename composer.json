@@ -3,7 +3,7 @@
   "description": "php 工具包",
   "type": "library",
   "keywords": [
-    "Tools",
+    "PHPTools",
     "Library"
   ],
   "homepage": "https://github.com/witchycq/phptool",
@@ -17,11 +17,12 @@
   ],
   "minimum-stability": "stable",
   "require": {
-    "php": ">=7.0.0"
+    "php": ">=7.0.0",
+    "monolog/monolog": "^2.2"
   },
   "autoload": {
     "psr-4": {
-      "phptool\\": "src/"
+      "witchy\\phptool\\": "src/tools/"
     }
   },
   "require-dev": {

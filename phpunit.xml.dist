@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/8.5/phpunit.xsd"
+    bootstrap="tests/bootstrap.php"
+    colors="true"
+>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+            <directory suffix=".php">src/tools</directory>
+        </whitelist>
+    </filter>
+
+    <testsuites>
+        <testsuite name="Stack">
+            <directory>tests/StackTest</directory>
+        </testsuite>
+    </testsuites>
+
+    <testsuites>
+        <testsuite name="unlimit">
+            <directory>tests/TreeTest</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
