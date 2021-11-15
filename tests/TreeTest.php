@@ -2,6 +2,8 @@
 
 namespace App\tests;
 
+require_once __DIR__ . '/../vendor/autoload.php';
+define("ROOT_PATH", dirname(__DIR__) . "/");
 
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
@@ -11,34 +13,44 @@ use Monolog\Handler\StreamHandler;
 
 class TreeTest extends TestCase
 {
-    public function testSum()
+    public function testUnlimit()
     {
         $obj = new Unlimit();
         $data = array(
-            ['id' => 1, 'name' => '手机', 'pid' => 0],
-            ['id' => 2, 'name' => 'ios', 'pid' => 1],
-            ['id' => 3, 'name' => 'android', 'pid' => 1],
-            ['id' => 4, 'name' => '电脑', 'pid' => 0],
-            ['id' => 5, 'name' => 'window', 'pid' => 4],
-            ['id' => 6, 'name' => 'mac', 'pid' => 4],
+            ['id' => 1, 'name' => '手机', 'p_id' => 0],
+            ['id' => 2, 'name' => 'ios', 'p_id' => 1],
+            ['id' => 3, 'name' => 'android', 'p_id' => 1],
+            ['id' => 4, 'name' => '电脑', 'p_id' => 0],
+            ['id' => 5, 'name' => 'window', 'p_id' => 4],
+            ['id' => 6, 'name' => 'mac', 'p_id' => 4],
         );
-        $tree = $obj->category($data, 0);
-        $result = array(
+        $result = $obj->tree($data, 0);
+        $assert_data = array(
             [
-                'id' => 1, 'name' => '手机', 'pid' => 0, 'child' => [
-                    ['id' => 2, 'name' => 'ios', 'pid' => 1],
-                    ['id' => 3, 'name' => 'android', 'pid' => 1],
+                'id' => 1, 'name' => '手机', 'p_id' => 0,
+                'children' => [
+                    ['id' => 2, 'name' => 'ios', 'p_id' => 1],
+                    ['id' => 3, 'name' => 'android', 'p_id' => 1],
                 ],
             ],
             [
-                'id' => 4, 'name' => '电脑', 'pid' => 0, 'child' => [
-                    ['id' => 5, 'name' => 'window', 'pid' => 4],
-                    ['id' => 6, 'name' => 'mac', 'pid' => 4],
+                'id' => 4, 'name' => '电脑', 'p_id' => 0,
+                'children' => [
+                    ['id' => 5, 'name' => 'window', 'p_id' => 4],
+                    ['id' => 6, 'name' => 'mac', 'p_id' => 4],
                 ]
             ]
         );
-        $this->Log()->info('phptool.category', $tree, true);
-        $this->assertEquals($result, $tree);
+        $this->Log()->info('phptool.category', $result, true);
+        $this->assertEquals($assert_data, $result);
+
+        $getAllChild_result = $obj->getAllChild($data, 1);
+        $this->Log()->info('phptool.getAllChild', $getAllChild_result, true);
+        $this->assertEquals($getAllChild_result, [2, 3]);
+
+        $getParentByChild_result = $obj->getParentByChild($data, 6);
+        $this->Log()->info('phptool.getParentByChild', $getParentByChild_result, true);
+        $this->assertEquals($getParentByChild_result, [6, 4]);
     }
 
     public function Log()
@@ -46,7 +58,6 @@ class TreeTest extends TestCase
         // create a log channel
         $log = new Logger('PHPToolLog');
         $log->pushHandler(new StreamHandler(ROOT_PATH . 'storage/logs/app.log', Logger::INFO));
-        $log->info('phptool.category');
         return $log;
     }
 }

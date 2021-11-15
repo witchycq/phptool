@@ -5,36 +5,38 @@ namespace witchy\phptool\tree;
 class Unlimit
 {
     /**
-     * 获取树状数据 引用方式
+     * (引用)获取树状数据
      *
-     * @param [type] $data  数据源
-     * @param integer $parentId 父级id
-     * @return  array 返回数据
+     * @param array $data           数据源集合
+     * @param integer $parent_id    父级id
+     * @param string $p_key         父级ID key  默认p_id
+     * @return array                返回多维数组
      */
-    public function tree(array &$data, int $parent_id = 0, string $p_key = 'pid')
+    public function tree(&$data,  $parent_id = 0,  $p_key = 'p_id')
     {
-        $category = array();
+        $return_data = array();
         foreach ($data as $key => $value) {
             if ($value[$p_key] == $parent_id) {
                 // unset($data[$key]);
                 if (!empty($this->tree($data, $value['id']))) {
-                    $value['child'] = $this->tree($data, $value['id']);
+                    $value['children'] = $this->tree($data, $value['id']);
                 }
-                $category[] = $value;
+                $return_data[] = $value;
             }
         }
-        return $category;
+        return $return_data;
     }
 
 
     /**
-     * 获取指定结点的所有子级结点ID
+     * (递归)获取指定结点的所有子级结点ID
      *
-     * @param $array
-     * @param $id
-     * @return array
+     * @param array $array  数据源集合
+     * @param integer $id   结点id
+     * @param string $p_key 父级ID key  默认p_id
+     * @return array        一维数组
      */
-    function getAllChild(array $array, int $id = 0, string $p_key = 'pid')
+    public function getAllChild($array,  $id = 0,  $p_key = 'p_id')
     {
         $arr = array();
         foreach ($array as $v) {
@@ -48,20 +50,20 @@ class Unlimit
 
 
     /**
-     * 通过某个结点获取所有父级结点ID
-     * @param int $child_id 子id
-     * @param array $pc_data 父子数据集合
-     * @param array $p_key 父级key pid
-     * @return array
+     * (递归)通过某个结点获取所有父级结点ID
+     * @param array $data       数据集合
+     * @param int $child_id     子id
+     * @param array $p_key      父级ID key  默认p_id
+     * @return array            一维数组
      */
-    function getParentByChild(int $child_id, array $data, int $p_key = 'pid')
+    public function getParentByChild($data,  $child_id,  $p_key = 'p_id')
     {
         $arr = array();
         foreach ($data as $item) {
             if ($item['id'] == $child_id) {
                 $arr[] = $item['id'];
                 if ($item[$p_key] != 0) {
-                    $arr = array_merge($arr, $this->getParentByChild($item[$p_key], $data));
+                    $arr = array_merge($arr, $this->getParentByChild($data, $item[$p_key]));
                 }
             }
         }
