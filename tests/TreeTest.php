@@ -15,45 +15,38 @@ class TreeTest extends TestCase
     {
         $obj = new Unlimit();
         $data = array(
-            ['id' => 1, 'pid' => 0],
-            ['id' => 2, 'pid' => 1],
-            // ['id' => 3, 'pid' => 2],
-            // ['id' => 4, 'pid' => 3],
-            // ['id' => 5, 'pid' => 4],
-            // ['id' => 6, 'pid' => 5],
+            ['id' => 1, 'name' => '手机', 'pid' => 0],
+            ['id' => 2, 'name' => 'ios', 'pid' => 1],
+            ['id' => 3, 'name' => 'android', 'pid' => 1],
+            ['id' => 4, 'name' => '电脑', 'pid' => 0],
+            ['id' => 5, 'name' => 'window', 'pid' => 4],
+            ['id' => 6, 'name' => 'mac', 'pid' => 4],
         );
-        var_dump($obj->category($data, 0));
-        // array(1) {
-        //     [0]=>
-        //     array(3) {
-        //       ["id"]=>
-        //       int(1)
-        //       ["pid"]=>
-        //       int(0)
-        //       ["child"]=>
-        //       array(1) {
-        //         [0]=>
-        //         array(3) {
-        //           ["id"]=>
-        //           int(2)
-        //           ["pid"]=>
-        //           int(1)
-        //           ["child"]=>
-        //           array(0) {
-        //           }
-        //         }
-        //       }
-        //     }
-        //   }
-        // $this->Log()->error('category', $obj->category($data, 0));
+        $tree = $obj->category($data, 0);
+        $result = array(
+            [
+                'id' => 1, 'name' => '手机', 'pid' => 0, 'child' => [
+                    ['id' => 2, 'name' => 'ios', 'pid' => 1],
+                    ['id' => 3, 'name' => 'android', 'pid' => 1],
+                ],
+            ],
+            [
+                'id' => 4, 'name' => '电脑', 'pid' => 0, 'child' => [
+                    ['id' => 5, 'name' => 'window', 'pid' => 4],
+                    ['id' => 6, 'name' => 'mac', 'pid' => 4],
+                ]
+            ]
+        );
+        $this->Log()->info('phptool.category', $tree, true);
+        $this->assertEquals($result, $tree);
     }
 
     public function Log()
     {
         // create a log channel
-        $log = new Logger('Tester');
-        $log->pushHandler(new StreamHandler(ROOT_PATH . 'storage/logs/app.log', Logger::WARNING));
-        $log->error("Error");
+        $log = new Logger('PHPToolLog');
+        $log->pushHandler(new StreamHandler(ROOT_PATH . 'storage/logs/app.log', Logger::INFO));
+        $log->info('phptool.category');
         return $log;
     }
 }
