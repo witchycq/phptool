@@ -52,8 +52,8 @@ class Unlimit
     /**
      * (递归)通过某个结点获取所有父级结点ID
      * @param array $data       数据集合
-     * @param int $child_id     子id
-     * @param array $p_key      父级ID key  默认p_id
+     * @param integer $child_id     子id
+     * @param string $p_key      父级ID key  默认p_id
      * @return array            一维数组
      */
     public function getParentByChild($data,  $child_id,  $p_key = 'p_id')
@@ -65,6 +65,25 @@ class Unlimit
                 if ($item[$p_key] != 0) {
                     $arr = array_merge($arr, $this->getParentByChild($data, $item[$p_key]));
                 }
+            }
+        }
+        return $arr;
+    }
+
+    /**
+     * 获取指定结点的一级结点集合
+     *
+     * @param array [type] $data 数据集合
+     * @param integer [type] $id 结点id
+     * @param string $p_key      父级ID key  默认p_id
+     * @return array             一维数组
+     */
+    public function getOne($data, $id, $p_key = 'p_id')
+    {
+        $arr = [];
+        foreach ($data as $k => $v) {
+            if ($v[$p_key] == $id) {
+                $arr[] = $v['id'];
             }
         }
         return $arr;
