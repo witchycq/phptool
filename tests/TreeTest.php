@@ -25,7 +25,11 @@ class TreeTest extends TestCase
             ['id' => 5, 'name' => 'window', 'p_id' => 4],
             ['id' => 6, 'name' => 'mac', 'p_id' => 4],
         );
-        $result = $obj->tree($data, 0);
+
+
+        /**
+         * 获取指定结点的树状数据
+         */
         $assert_data = array(
             [
                 'id' => 1, 'name' => '手机', 'p_id' => 0,
@@ -47,10 +51,7 @@ class TreeTest extends TestCase
                 ]
             ]
         );
-
-        /**
-         * 获取指定结点的树状数据
-         */
+        $result = $obj->tree($data, 0);
         $this->Log()->info('phptool.category', $result, true);
         $this->assertEquals($assert_data, $result);
 
