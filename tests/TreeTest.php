@@ -15,7 +15,7 @@ class TreeTest extends TestCase
 {
     public function testUnlimit()
     {
-        $obj = new Unlimit();
+        $pt_unlimit = new Unlimit();
         $data = array(
             ['id' => 1, 'name' => '手机', 'p_id' => 0],
             ['id' => 2, 'name' => 'ios', 'p_id' => 1],
@@ -51,28 +51,28 @@ class TreeTest extends TestCase
                 ]
             ]
         );
-        $result = $obj->tree($data, 0);
+        $result = $pt_unlimit->tree($data, 0);
         $this->Log()->info('phptool.category', $result, true);
         $this->assertEquals($assert_data, $result);
 
         /**
          * 获取指定结点的所有子节点 包含自己
          */
-        $getAllChild_result = $obj->getAllChild($data, 1);
+        $getAllChild_result = $pt_unlimit->getAllChild($data, 1);
         $this->Log()->info('phptool.getAllChild', $getAllChild_result, true);
         $this->assertEquals($getAllChild_result, [2, 3, 7]);
 
         /**
          * 获取指定结点的所有父节点 包含自己
          */
-        $getParentByChild_result = $obj->getParentByChild($data, 6);
+        $getParentByChild_result = $pt_unlimit->getParentByChild($data, 6);
         $this->Log()->info('phptool.getParentByChild', $getParentByChild_result, true);
         $this->assertEquals($getParentByChild_result, [6, 4]);
 
         /**
          * 获取指定结点的一级结点数据
          */
-        $one = $obj->getOne($data, 1);
+        $one = $pt_unlimit->getOne($data, 1);
         $this->Log()->info('phptool.getOne', $one, true);
         $this->assertEquals($one, [2, 3]);
     }
